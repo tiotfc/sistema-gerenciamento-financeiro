@@ -1,0 +1,23 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: GERENCIAMENTO-FINANCEIRO-SERVICE
+  datasource:
+    url: jdbc:h2:mem:GerenciamentoFinanceiro
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+  h2:
+    console:
+      enabled: true
