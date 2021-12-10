@@ -1,9 +1,15 @@
 package br.com.sada.gerenciamento.financeiro.service;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import javax.naming.LimitExceededException;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Service;
 
+import br.com.sada.gerenciamento.financeiro.exception.LimiteExcedidoException;
+import br.com.sada.gerenciamento.financeiro.model.Categoria;
 import br.com.sada.gerenciamento.financeiro.model.Movimento;
 import br.com.sada.gerenciamento.financeiro.model.dto.MovimentoDto;
 import br.com.sada.gerenciamento.financeiro.repository.MovimentoRepository;
@@ -24,9 +30,35 @@ public class MovimentoService {
 				.orElseThrow(() -> new EntityNotFoundException("Movimento id:" + id + "não encontrada!"));
 	}
 
-	public Movimento inserirMovimento(MovimentoDto movimentoDto) {
+	public Movimento inserirMovimento(MovimentoDto movimentoDto) throws LimiteExcedidoException {
+		if (movimentoDto.getTipoMovimento() == "D") {
+			List<Movimento> listaNesteMesPorCategoria = buscarMesAtualPorCategoria(movimentoDto.getCategoriaId());
+			String nomeCategoria = listaNesteMesPorCategoria.get(0).getCategoria().getNome();
+			double limite = listaNesteMesPorCategoria.get(0).getCategoria().getLimite();
+			double sum = listaNesteMesPorCategoria.stream().mapToDouble(m -> m.getValor()).sum();
+
+			if (sum >= limite) {
+				throw new LimiteExcedidoException(
+						"Limite de: " + limite + " para categoria: " + nomeCategoria + " atingido!");
+			}
+		}
 		return movimentoRepository
 				.save(movimentoDto.toMovimento(categoriaService.buscaPorId(movimentoDto.getCategoriaId())));
 	}
 
+	public List<Movimento> buscarMesAtual() {
+		LocalDate firstDayNextMonth = LocalDate.now().plusMonths(1).withDayOfMonth(1);
+		LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
+		List<Movimento> findByDataInclusaoBetween = movimentoRepository.findByDataInclusaoBetween(firstDayOfMonth,
+				firstDayNextMonth);
+		return findByDataInclusaoBetween;
+	}
+
+	public List<Movimento> buscarMesAtualPorCategoria(int categoriaId) {
+		LocalDate firstDayNextMonth = LocalDate.now().plusMonths(1).withDayOfMonth(1);
+		LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
+		List<Movimento> findByDataInclusaoBetween = movimentoRepository.findByDataInclusaoBetweenAndCategoria(
+				firstDayOfMonth, firstDayNextMonth, categoriaService.buscaPorId(categoriaId));
+		return findByDataInclusaoBetween;
+	}
 }

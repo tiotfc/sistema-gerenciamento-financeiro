@@ -1,5 +1,7 @@
 package br.com.sada.gerenciamento.financeiro.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +38,12 @@ public class CategoriaController {
 		Categoria categoria = categoriaService.inserirCategoria(categoriaDto);
 		return ResponseEntity.ok(new CategoriaView(categoria.getId(), categoria.getNome(), categoria.getLimite()));
 
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<Categoria>> listaCategoria() {
+		List<Categoria> bustarTodos = categoriaService.bustarTodos();
+		return ResponseEntity.ok(bustarTodos);		
 	}
 
 }

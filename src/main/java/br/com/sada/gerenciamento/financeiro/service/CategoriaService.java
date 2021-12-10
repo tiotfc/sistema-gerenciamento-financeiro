@@ -1,5 +1,7 @@
 package br.com.sada.gerenciamento.financeiro.service;
 
+import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Service;
@@ -14,7 +16,6 @@ public class CategoriaService {
 	private CategoriaRepository categoriaRepository;
 
 	public CategoriaService(CategoriaRepository categoriaRepository) {
-		super();
 		this.categoriaRepository = categoriaRepository;
 	}
 
@@ -26,5 +27,9 @@ public class CategoriaService {
 	public Categoria inserirCategoria(CategoriaDto categoriaDto) {
 		return categoriaRepository.save(categoriaDto.toCategoria());
 	}
-
+	
+	public List<Categoria> bustarTodos() {
+		return categoriaRepository.findAll();
+	}
+	
 }

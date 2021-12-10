@@ -12,3 +12,9 @@ insert into categoria VALUES (null, 0.00, '13 SALARIO' );
 insert into categoria VALUES (null, 0.00, 'FERIAS');
 insert into categoria VALUES (null, 0.00, 'RENDA EXTRA' );
 insert into categoria VALUES (null, 0.00, 'INVESTIMENTOS' );
+
+insert into movimento values(null, '2021-12-01', 'lanche',  'D',  10.00,  2);
+insert into movimento values(null, '2021-12-01', 'pastel',  'D',  10.00,  2);
+insert into movimento values(null, '2021-12-01', 'refrigerante',  'D',  10.00,  2);
+insert into movimento values(null, '2021-12-01', 'aluguel',  'D',  1000.00,  1);
+

@@ -1,5 +1,7 @@
 package br.com.sada.gerenciamento.financeiro.model.dto;
 
+import java.time.LocalDate;
+
 import br.com.sada.gerenciamento.financeiro.model.Categoria;
 
 public class MovimentoView {
@@ -8,14 +10,18 @@ public class MovimentoView {
 	private double valor;
 	private String tipoMovimento;
 	private String detalhe;
+	private LocalDate dataInclusao;
 	private Categoria categoria;
+	
 
-	public MovimentoView(int id, double valor, String tipoMovimento, String detalhe, Categoria categoria) {
+	public MovimentoView(int id, double valor, String tipoMovimento, String detalhe, Categoria categoria,
+			LocalDate dataInclusao) {
 		this.id = id;
 		this.valor = valor;
 		this.tipoMovimento = tipoMovimento;
 		this.detalhe = detalhe;
 		this.categoria = categoria;
+		this.dataInclusao = dataInclusao;
 	}
 
 	public int getId() {
@@ -36,6 +42,10 @@ public class MovimentoView {
 
 	public Categoria getCategoria() {
 		return categoria;
+	}
+
+	public LocalDate getDataInclusao() {
+		return dataInclusao;
 	}
 
 }
