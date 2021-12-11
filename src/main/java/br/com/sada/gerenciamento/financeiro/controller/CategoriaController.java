@@ -54,12 +54,14 @@ public class CategoriaController {
 		return ResponseEntity.ok(bustarTodos);		
 	}
 	
+	@Operation(summary = "Atualizar uma categoria.")
 	@PutMapping("/{id}")
 	public ResponseEntity<CategoriaView> atualizaCategoria(@PathVariable int id, @RequestBody CategoriaDto categoriaDto) {
 		Categoria categoria = categoriaService.atualizaCategoria(id, categoriaDto);
 		return ResponseEntity.ok(new CategoriaView(categoria.getId(), categoria.getNome(), categoria.getLimite()));
 	}
 	
+	@Operation(summary = "Remove uma categoria(somente se não estiver sendo utilizada).")
 	@DeleteMapping("/{id}")
 	public void deletaCategoria(@PathVariable int id) {
 		categoriaService.deletaCategoria(id);
