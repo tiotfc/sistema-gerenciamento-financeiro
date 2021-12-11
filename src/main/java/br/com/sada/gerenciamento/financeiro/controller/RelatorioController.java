@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.sada.gerenciamento.financeiro.model.dto.BalancoView;
 import br.com.sada.gerenciamento.financeiro.service.BalancoService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 
@@ -24,17 +25,19 @@ public class RelatorioController {
 		this.balancoService = balancoService;
 	}
 
-
+	@Operation(summary = "Relatorio mensal de despesas. Recebe alguma data do mês desejado.")
 	@PostMapping("/mensal")
 	public ResponseEntity<BalancoView> balancoMensal(@RequestBody LocalDate data) {
 		return ResponseEntity.ok(balancoService.balancoMensal(data));
 	}
 	
+	@Operation(summary = "Relatorio mensal de despesas. Recebe alguma data da semana desejada.")
 	@PostMapping("/semanal")
 	public ResponseEntity<BalancoView> balancoSemanal(@RequestBody LocalDate data) {
 		return ResponseEntity.ok(balancoService.balancoSemanal(data));
 	}
 
+	@Operation(summary = "Relatorio mensal de despesas. Recebe o dia desejado.")
 	@PostMapping("/diario")
 	public ResponseEntity<BalancoView> balancoDiario(@RequestBody LocalDate data) {
 		return ResponseEntity.ok(balancoService.balancoDiario(data));
