@@ -16,9 +16,12 @@ import br.com.sada.gerenciamento.financeiro.model.Movimento;
 import br.com.sada.gerenciamento.financeiro.model.dto.MovimentoDto;
 import br.com.sada.gerenciamento.financeiro.model.dto.MovimentoView;
 import br.com.sada.gerenciamento.financeiro.service.MovimentoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/movimentos")
+@Tag(description = "Movimentos", name = "Movimentos")
 public class MovimentoController {
 
 	private MovimentoService movimentoService;
@@ -27,6 +30,7 @@ public class MovimentoController {
 		this.movimentoService = movimentoService;
 	}
 
+	@Operation(summary = "Buscar um movimento por Id.")
 	@GetMapping("/{id}")
 	public ResponseEntity<MovimentoView> buscarPorId(@PathVariable int id) {
 		Movimento movimento = movimentoService.buscarPorId(id);
@@ -34,7 +38,7 @@ public class MovimentoController {
 				.ok(new MovimentoView(movimento.getId(), movimento.getValor(), movimento.getTipoMovimento(),
 						movimento.getDetalhe(), movimento.getCategoria(), movimento.getDataInclusao()));
 	}
-
+	@Operation(summary = "Salvar um novo movimento.")
 	@PostMapping
 	public ResponseEntity<MovimentoView> inserirMovimento(@RequestBody MovimentoDto movimentoDto)
 			throws LimiteExcedidoException {
@@ -43,7 +47,7 @@ public class MovimentoController {
 				.ok(new MovimentoView(movimento.getId(), movimento.getValor(), movimento.getTipoMovimento(),
 						movimento.getDetalhe(), movimento.getCategoria(), movimento.getDataInclusao()));
 	}
-
+	@Operation(summary = "Buscar todos os movimentos no mes atual.")
 	@GetMapping("/mes")
 	public ResponseEntity<List<MovimentoView>> buscarMesAtual() {
 		return ResponseEntity
@@ -52,7 +56,7 @@ public class MovimentoController {
 								i.getTipoMovimento(), i.getDetalhe(), i.getCategoria(), i.getDataInclusao()))
 						.collect(Collectors.toList()));
 	}
-	
+	@Operation(summary = "Buscar todos os movimentos do mes atual por categoria.")
 	@GetMapping("/mes/{categoriaId}")
 	public ResponseEntity<List<MovimentoView>> buscarMesAtualCategoria(@PathVariable int categoriaId) {
 		return ResponseEntity.ok(movimentoService
