@@ -17,4 +17,6 @@ insert into movimento values(null, '2021-12-01', 'lanche',  'D',  10.00,  2);
 insert into movimento values(null, '2021-12-01', 'pastel',  'D',  10.00,  2);
 insert into movimento values(null, '2021-12-01', 'refrigerante',  'D',  10.00,  2);
 insert into movimento values(null, '2021-12-01', 'aluguel',  'D',  1000.00,  1);
+insert into movimento values(null, '2021-12-01', 'salario',  'C',  2000.00,  9);
+insert into movimento values(null, '2022-01-01', 'salario',  'C',  2000.00,  9);
 

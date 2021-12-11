@@ -31,5 +31,17 @@ public class CategoriaService {
 	public List<Categoria> bustarTodos() {
 		return categoriaRepository.findAll();
 	}
+
+	public Categoria atualizaCategoria(int id, CategoriaDto categoriaDto) {
+		Categoria categoria = buscaPorId(id);
+		categoria.setLimite(categoriaDto.getLimite());
+		categoria.setNome(categoriaDto.getNome());
+	
+		return categoriaRepository.save(categoria);
+	}
+
+	public void deletaCategoria(int id) {
+		categoriaRepository.deleteById(id);
+	}
 	
 }

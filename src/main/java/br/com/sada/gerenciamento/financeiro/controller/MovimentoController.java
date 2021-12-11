@@ -47,6 +47,7 @@ public class MovimentoController {
 				.ok(new MovimentoView(movimento.getId(), movimento.getValor(), movimento.getTipoMovimento(),
 						movimento.getDetalhe(), movimento.getCategoria(), movimento.getDataInclusao()));
 	}
+	
 	@Operation(summary = "Buscar todos os movimentos no mes atual.")
 	@GetMapping("/mes")
 	public ResponseEntity<List<MovimentoView>> buscarMesAtual() {
@@ -56,6 +57,7 @@ public class MovimentoController {
 								i.getTipoMovimento(), i.getDetalhe(), i.getCategoria(), i.getDataInclusao()))
 						.collect(Collectors.toList()));
 	}
+	
 	@Operation(summary = "Buscar todos os movimentos do mes atual por categoria.")
 	@GetMapping("/mes/{categoriaId}")
 	public ResponseEntity<List<MovimentoView>> buscarMesAtualCategoria(@PathVariable int categoriaId) {

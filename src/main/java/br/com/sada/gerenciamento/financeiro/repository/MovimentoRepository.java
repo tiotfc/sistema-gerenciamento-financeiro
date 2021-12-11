@@ -12,10 +12,10 @@ import br.com.sada.gerenciamento.financeiro.model.Movimento;
 @Repository
 public interface MovimentoRepository extends JpaRepository<Movimento, Integer> {
 
-	List<Movimento> findByDataInclusaoBetween(LocalDate firstDayOfMonth, LocalDate firstDayNextMonth);
+	List<Movimento> findByDataInclusaoBetween(LocalDate firstDayOfMonth, LocalDate lastDayOfMonth);
 
 	List<Movimento> findByDataInclusao(LocalDate currentDate);
 	
-	List<Movimento> findByDataInclusaoBetweenAndCategoria(LocalDate firstDayOfMonth, LocalDate firstDayNextMonth, Categoria categoria);
+	List<Movimento> findByDataInclusaoBetweenAndCategoria(LocalDate firstDayOfMonth, LocalDate lastDayOfMonth, Categoria categoria);
 
 }

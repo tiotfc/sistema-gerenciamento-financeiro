@@ -47,18 +47,25 @@ public class MovimentoService {
 	}
 
 	public List<Movimento> buscarMesAtual() {
-		LocalDate firstDayNextMonth = LocalDate.now().plusMonths(1).withDayOfMonth(1);
+		LocalDate lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
 		LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
 		List<Movimento> findByDataInclusaoBetween = movimentoRepository.findByDataInclusaoBetween(firstDayOfMonth,
-				firstDayNextMonth);
+				lastDayOfMonth);
 		return findByDataInclusaoBetween;
 	}
 
 	public List<Movimento> buscarMesAtualPorCategoria(int categoriaId) {
-		LocalDate firstDayNextMonth = LocalDate.now().plusMonths(1).withDayOfMonth(1);
+		LocalDate lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
 		LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
+	
+		List<Movimento> findByDataInclusaoBetween = buscaEntreDatasPorCategoria(
+				firstDayOfMonth, lastDayOfMonth, categoriaId);
+		return findByDataInclusaoBetween;
+	}
+	
+	public List<Movimento> buscaEntreDatasPorCategoria(LocalDate dataIni, LocalDate dataFinal, int categoriaId) {
 		List<Movimento> findByDataInclusaoBetween = movimentoRepository.findByDataInclusaoBetweenAndCategoria(
-				firstDayOfMonth, firstDayNextMonth, categoriaService.buscaPorId(categoriaId));
+				dataIni, dataFinal, categoriaService.buscaPorId(categoriaId));
 		return findByDataInclusaoBetween;
 	}
 }
