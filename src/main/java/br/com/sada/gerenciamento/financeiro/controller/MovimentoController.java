@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.sada.gerenciamento.financeiro.exception.LimiteExcedidoException;
 import br.com.sada.gerenciamento.financeiro.model.Movimento;
@@ -44,17 +45,18 @@ public class MovimentoController {
 
 	@Operation(summary = "Salvar um novo movimento.")
 	@PostMapping
-	public ResponseEntity<MovimentoView> inserirMovimento(@RequestBody MovimentoDto movimentoDto)
+	public ResponseEntity<MovimentoView> inserirMovimento(@RequestBody MovimentoDto movimentoDto, UriComponentsBuilder uriBuilder)
 			throws LimiteExcedidoException {
 		Movimento movimento = movimentoService.salvaMovimento(movimentoDto);
-		return ResponseEntity
-				.ok(new MovimentoView(movimento.getId(), movimento.getValor(), movimento.getTipoMovimento(),
-						movimento.getDetalhe(), movimento.getCategoria(), movimento.getDataInclusao()));
+		MovimentoView movimentoView = new MovimentoView(movimento.getId(), movimento.getValor(), movimento.getTipoMovimento(),
+				movimento.getDetalhe(), movimento.getCategoria(), movimento.getDataInclusao());
+		return ResponseEntity.created(uriBuilder.path("movimentos/{id}").buildAndExpand(movimentoView.getId()).toUri())
+				.build();
 	}
 
 	@Operation(summary = "Atualizar um Movimento.")
 	@PutMapping("/{id}")
-	public ResponseEntity<MovimentoView> atualizaCategoria(@PathVariable int id,
+	public ResponseEntity<MovimentoView> atualizaMovimento(@PathVariable int id,
 			@RequestBody MovimentoDto movimentoDto) {
 		Movimento movimento = movimentoService.atualizaMovimento(id, movimentoDto);
 		return ResponseEntity.ok(new MovimentoView(movimento.getId(), movimento.getValor(), movimento.getTipoMovimento(),

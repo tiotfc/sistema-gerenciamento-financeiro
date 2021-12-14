@@ -12,6 +12,10 @@ public class CategoriaView {
 		this.limite = limite;
 	}
 
+	public CategoriaView() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public int getId() {
 		return id;
 	}

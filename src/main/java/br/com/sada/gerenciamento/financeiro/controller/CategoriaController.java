@@ -1,6 +1,7 @@
 package br.com.sada.gerenciamento.financeiro.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.sada.gerenciamento.financeiro.model.Categoria;
 import br.com.sada.gerenciamento.financeiro.model.dto.CategoriaDto;
@@ -38,29 +40,35 @@ public class CategoriaController {
 		return ResponseEntity.ok(new CategoriaView(categoria.getId(), categoria.getNome(), categoria.getLimite()));
 
 	}
-	
+
 	@Operation(summary = "Salvar uma nova categoria.")
 	@PostMapping
-	public ResponseEntity<CategoriaView> inserirCategoria(@RequestBody CategoriaDto categoriaDto) {
+	public ResponseEntity<CategoriaView> inserirCategoria(@RequestBody CategoriaDto categoriaDto,
+			UriComponentsBuilder uriBuilder) {
 		Categoria categoria = categoriaService.inserirCategoria(categoriaDto);
-		return ResponseEntity.ok(new CategoriaView(categoria.getId(), categoria.getNome(), categoria.getLimite()));
+		CategoriaView categoriaView = new CategoriaView(categoria.getId(), categoria.getNome(), categoria.getLimite());
+		return ResponseEntity.created(uriBuilder.path("categorias/{id}").buildAndExpand(categoriaView.getId()).toUri())
+				.build();
 
 	}
-	
+
 	@Operation(summary = "Listar todas as categorias.")
 	@GetMapping
-	public ResponseEntity<List<Categoria>> listaCategoria() {
-		List<Categoria> bustarTodos = categoriaService.bustarTodos();
-		return ResponseEntity.ok(bustarTodos);		
+	public ResponseEntity<List<CategoriaView>> listaCategoria() {
+		List<Categoria> listaCategorias = categoriaService.listarCategoria();
+
+		return ResponseEntity.ok(listaCategorias.stream()
+				.map(c -> new CategoriaView(c.getId(), c.getNome(), c.getLimite())).collect(Collectors.toList()));
 	}
-	
+
 	@Operation(summary = "Atualizar uma categoria.")
 	@PutMapping("/{id}")
-	public ResponseEntity<CategoriaView> atualizaCategoria(@PathVariable int id, @RequestBody CategoriaDto categoriaDto) {
+	public ResponseEntity<CategoriaView> atualizaCategoria(@PathVariable int id,
+			@RequestBody CategoriaDto categoriaDto) {
 		Categoria categoria = categoriaService.atualizaCategoria(id, categoriaDto);
 		return ResponseEntity.ok(new CategoriaView(categoria.getId(), categoria.getNome(), categoria.getLimite()));
 	}
-	
+
 	@Operation(summary = "Remove uma categoria(somente se não estiver sendo utilizada).")
 	@DeleteMapping("/{id}")
 	public void deletaCategoria(@PathVariable int id) {

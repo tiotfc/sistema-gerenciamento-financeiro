@@ -28,7 +28,7 @@ public class CategoriaService {
 		return categoriaRepository.save(categoriaDto.toCategoria());
 	}
 	
-	public List<Categoria> bustarTodos() {
+	public List<Categoria> listarCategoria() {
 		return categoriaRepository.findAll();
 	}
 

@@ -10,6 +10,9 @@ public class BalancoView {
 	private List<Movimento> listaCreditos;
 	private double total;
 
+	public BalancoView() {
+	}
+
 	public BalancoView(List<Movimento> listaDebitos, List<Movimento> listaCreditos, double total) {
 		this.listaDebitos = listaDebitos;
 		this.listaCreditos = listaCreditos;

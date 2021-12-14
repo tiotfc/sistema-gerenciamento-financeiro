@@ -12,7 +12,9 @@ public class MovimentoView {
 	private String detalhe;
 	private LocalDate dataInclusao;
 	private Categoria categoria;
-	
+
+	public MovimentoView() {
+	}
 
 	public MovimentoView(int id, double valor, String tipoMovimento, String detalhe, Categoria categoria,
 			LocalDate dataInclusao) {
