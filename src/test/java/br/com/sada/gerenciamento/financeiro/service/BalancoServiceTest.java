@@ -53,12 +53,34 @@ class BalancoServiceTest {
 
 	@Test
 	void testBalancoSemanal() {
-		fail("Not yet implemented");
+		List<Movimento> listaMovimentos = new ArrayList<>();
+		listaMovimentos.add(new Movimento(1.0, "D", "detalhe debito", new Categoria("Categoria", 0.0)));
+		listaMovimentos.add(new Movimento(1.0, "C", "detalhe credito", new Categoria("Categoria", 0.0)));
+		
+		BalancoDto balancoDto = new BalancoDto();
+		balancoDto.setData(LocalDate.now());
+		
+		doReturn(listaMovimentos).when(movimentoService).buscarMovimentoSemanaPorData(Mockito.any(LocalDate.class));
+		
+		assertEquals("detalhe debito", balancoService.balancoSemanal(balancoDto).getListaDebitos().get(0).getDetalhe());
+		assertEquals("detalhe credito", balancoService.balancoSemanal(balancoDto).getListaCreditos().get(0).getDetalhe());
+		assertEquals(0.0, balancoService.balancoSemanal(balancoDto).getTotal());
 	}
 
 	@Test
 	void testBalancoDiario() {
-		fail("Not yet implemented");
+		List<Movimento> listaMovimentos = new ArrayList<>();
+		listaMovimentos.add(new Movimento(1.0, "D", "detalhe debito", new Categoria("Categoria", 0.0)));
+		listaMovimentos.add(new Movimento(1.0, "C", "detalhe credito", new Categoria("Categoria", 0.0)));
+		
+		BalancoDto balancoDto = new BalancoDto();
+		balancoDto.setData(LocalDate.now());
+		
+		doReturn(listaMovimentos).when(movimentoService).buscarMovimentoDia(Mockito.any(LocalDate.class));
+		
+		assertEquals("detalhe debito", balancoService.balancoDiario(balancoDto).getListaDebitos().get(0).getDetalhe());
+		assertEquals("detalhe credito", balancoService.balancoDiario(balancoDto).getListaCreditos().get(0).getDetalhe());
+		assertEquals(0.0, balancoService.balancoDiario(balancoDto).getTotal());
 	}
 
 }
