@@ -21,7 +21,7 @@ public class CategoriaService {
 
 	public Categoria buscaPorId(int id) {
 		return categoriaRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("Categoria id:" + id + "não encontrada!"));
+				.orElseThrow(() -> new EntityNotFoundException("Categoria id: " + id + " não encontrada!"));
 	}
 
 	public Categoria inserirCategoria(CategoriaDto categoriaDto) {

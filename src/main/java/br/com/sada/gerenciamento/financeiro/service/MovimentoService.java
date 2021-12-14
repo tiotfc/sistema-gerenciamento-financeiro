@@ -28,7 +28,7 @@ public class MovimentoService {
 
 	public Movimento buscarPorId(int id) {
 		return movimentoRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("Movimento id:" + id + "não encontrada!"));
+				.orElseThrow(() -> new EntityNotFoundException("Movimento id: " + id + " não encontrada!"));
 	}
 
 	public Movimento salvaMovimento(MovimentoDto movimentoDto) throws LimiteExcedidoException {
