@@ -32,10 +32,11 @@ public class MovimentoService {
 	}
 
 	public Movimento salvaMovimento(MovimentoDto movimentoDto) throws LimiteExcedidoException {
-		regraLimite(movimentoDto);
+		Categoria categoria = categoriaService.buscaPorId(movimentoDto.getCategoriaId());
+		regraLimite(movimentoDto, categoria);
 		
 		return movimentoRepository
-				.save(movimentoDto.toMovimento(categoriaService.buscaPorId(movimentoDto.getCategoriaId())));
+				.save(movimentoDto.toMovimento(categoria));
 	}
 
 	public List<Movimento> buscarMovimentoMesPorData(LocalDate data) {
@@ -79,7 +80,8 @@ public class MovimentoService {
 	}
 
 	public Movimento atualizaMovimento(int id, MovimentoDto movimentoDto) {
-		regraLimite(movimentoDto);
+		Categoria categoria = categoriaService.buscaPorId(movimentoDto.getCategoriaId());
+		regraLimite(movimentoDto, categoria);
 		Movimento movimento = buscarPorId(id);
 		movimento.setCategoria(categoriaService.buscaPorId(movimentoDto.getCategoriaId()));
 		movimento.setDataInclusao(movimentoDto.getDataInclusao());
@@ -97,14 +99,18 @@ public class MovimentoService {
 		
 	}
 	
-	public void regraLimite(MovimentoDto movimentoDto) {
+	public void regraLimite(MovimentoDto movimentoDto, Categoria categoria) {
 		if ("D".equals(movimentoDto.getTipoMovimento())) {
 			List<Movimento> listaNesteMesPorCategoria = buscarMesAtualPorCategoria(movimentoDto.getCategoriaId());
-			String nomeCategoria = listaNesteMesPorCategoria.get(0).getCategoria().getNome();
-			double limite = listaNesteMesPorCategoria.get(0).getCategoria().getLimite();
-			double sum = listaNesteMesPorCategoria.stream().mapToDouble(m -> m.getValor()).sum();
-			sum += movimentoDto.getValor(); 
+			String nomeCategoria = categoria.getNome();
+			double limite = categoria.getLimite();
+			double sum = 0.0;
 			
+			if (listaNesteMesPorCategoria.size() > 0) {
+				sum = listaNesteMesPorCategoria.stream().mapToDouble(m -> m.getValor()).sum();
+			}
+			
+			sum += movimentoDto.getValor(); 
 			if (sum >= limite) {
 				throw new LimiteExcedidoException(
 						"Limite de: " + limite + " para categoria: " + nomeCategoria + " atingido!");
